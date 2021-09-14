@@ -31,6 +31,7 @@ def addCard(newCard):
     except FileNotFoundError:
         print('New card was not saved succesfully')
 
+
 # Function to remove a selected card using pickle module
 def remCard(card2rem):
     try:
@@ -83,6 +84,49 @@ def viewCard():
     deck.scrollDeck(allCards,numAll)
 
 
+# Function to edit cards
+def editCard():
+    allCards = deck.getDeck()
+    numAll = list(range(0,len(allCards)))
+    card2EditInd = deck.scrollDeck(allCards,numAll)
+    revisedCard = allCards[card2EditInd]
+    print('Available categories to edit: ')
+    for number, category in enumerate(deck.categories):
+        print(number, category)
+    while(True):
+        try:
+            cat2EditInd = int(input('Select the number of the category you want to edit: '))
+            if(cat2EditInd in range(len(deck.categories))):
+                break
+            else:
+                print('Please enter a valid category number')
+        except ValueError:
+            print('Please enter a valid category number')
+    
+    flavorText = input('\nEnter flavor text for "%s":\n' % cat2EditInd)
+    effectText = input('\nEnter effect for "%s":\n' % cat2EditInd)
+    
+    cardKeyList = list(revisedCard)
+    catKey = cardKeyList[cat2EditInd]
+    revisedCard[catKey] = (flavorText, effectText) # call dict key by number
+    clear()
+    print('Your finished card will appear like this:\n')
+    deck.cardView(revisedCard)
+    while(True):
+        saveConfirm = input('\nSave this card (y/n)? ').lower()
+        if (saveConfirm == 'y'):
+            allCards[card2EditInd] = revisedCard
+            break
+        elif (saveConfirm == 'n'):
+            print('\nNew card discarded')
+            break
+        else:
+            print('\nInvalid input')
+    deck.dumpDeck(allCards)
+    print('Returning to main menu.\nPress any key to continue...')
+    wait_key()
+
+
 # Function to delete cards
 def deleteCard():
     allCards = deck.getDeck()
@@ -105,18 +149,9 @@ def deleteCard():
             print('Invalid input')
 
 
-# Function to edit cards
-def editCard():
-    allCards = deck.getDeck()
-    numAll = list(range(0,len(allCards)))
-    card2edit = deck.scrollDeck(allCards,numAll)
-    print('Function under construction. Come back later...')
-    wait_key()
-
-
 # Main menu
 funcDict = {'1': writeCard,     '2': viewCard,
-            '3': deleteCard,    '4': editCard,
+            '3': editCard,      '4': deleteCard,
             '5': initDeck,      '0':'Exit'
 }
 
