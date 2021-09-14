@@ -1,6 +1,5 @@
 # Methods and variables for making and using a deck of Life Twists & Turns cards.
 import os
-import sys
 from console.utils import wait_key
 import pickle
 
@@ -28,7 +27,7 @@ def getDeck():
         print('No local serialized deck file found. Please initialize a new deck...')
 
 
-# Method for dumping deck into a serialized deck file
+# Method for dumping deck into a serialized deck file. Can also be used to initialize a deck
 def dumpDeck(allCards):
     with open(deckName, 'wb') as deckFile:
             pickle.dump(allCards, deckFile)
@@ -43,7 +42,7 @@ def scrollDeck (allCards, validInd):    # allCards is a list containing card dic
     while(True):
         cardView(allCards[validInd[i]])
         print('\n%s of %s\n' % ((i+1),len(validInd)))
-        usr_sel = input('\nPress P to see previous card\tPress N to see next card\tPress S to select/exit\n\nChoose an option: ').lower()
+        usr_sel = input('\nPress P to see previous card\tPress N to see next card\tPress S to select/exit\n\nTo see a specific card, enter an index number\n\nChoose an option: ').lower()
         clear()
         if (usr_sel == 'p') and (i > 0):
             print('Here is the previous card:\n')
@@ -55,6 +54,9 @@ def scrollDeck (allCards, validInd):    # allCards is a list containing card dic
             i += 1
         elif (usr_sel == 'n') and (i >= (len(validInd)-1)):
             print('There is not a next card. Here is the current card:\n')
+        elif (usr_sel.isnumeric() and (int(usr_sel) <= len(validInd)) and (int(usr_sel) > 0)):
+            print('Here is the specified card:\n')
+            i = int(usr_sel) - 1
         elif (usr_sel == 's'):
             cardView(allCards[validInd[i]])
             print('\nThis card has been selected!')
