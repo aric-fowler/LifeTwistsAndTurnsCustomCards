@@ -86,16 +86,18 @@ def viewCard():
 
 # Function to edit cards
 def editCard():
+    print('Edit function is currently not working')
+#    return
     allCards = deck.getDeck()
     numAll = list(range(0,len(allCards)))
     card2EditInd = deck.scrollDeck(allCards,numAll)
-    revisedCard = allCards[card2EditInd]
+    revisedCard = allCards[card2EditInd].copy()
     print('Available categories to edit: ')
     for number, category in enumerate(deck.categories):
-        print(number, category)
+        print((number + 1), category)
     while(True):
         try:
-            cat2EditInd = int(input('Select the number of the category you want to edit: '))
+            cat2EditInd = int(input('Select the number of the category you want to edit: ')) - 1
             if(cat2EditInd in range(len(deck.categories))):
                 break
             else:
@@ -103,25 +105,26 @@ def editCard():
         except ValueError:
             print('Please enter a valid category number')
     
-    flavorText = input('\nEnter flavor text for "%s":\n' % cat2EditInd)
-    effectText = input('\nEnter effect for "%s":\n' % cat2EditInd)
+    flavorText = input('\nEnter flavor text for "%s":\n' % deck.categories[cat2EditInd])
+    effectText = input('\nEnter effect for "%s":\n' % deck.categories[cat2EditInd])
     
     cardKeyList = list(revisedCard)
     catKey = cardKeyList[cat2EditInd]
     revisedCard[catKey] = (flavorText, effectText) # call dict key by number
-    clear()
+    clear() # remove this comment after fixing
     print('Your finished card will appear like this:\n')
     deck.cardView(revisedCard)
     while(True):
         saveConfirm = input('\nSave this card (y/n)? ').lower()
         if (saveConfirm == 'y'):
             allCards[card2EditInd] = revisedCard
+            print('\nCard saved successfully!\n')
             break
         elif (saveConfirm == 'n'):
-            print('\nNew card discarded')
+            print('\nEdits discarded\n')
             break
         else:
-            print('\nInvalid input')
+            print('\nInvalid input\n')
     deck.dumpDeck(allCards)
     print('Returning to main menu.\nPress any key to continue...')
     wait_key()
@@ -138,7 +141,7 @@ def deleteCard():
         usr_confirm = input('Are you sure you want to delete this card(y/n)? ').lower()
         if (usr_confirm == 'y'):
             remCard(card2del)
-            print('Card successfully deleted!\nReturning to main menu\nPress any key to continue...')
+            print('Returning to main menu\nPress any key to continue...')
             wait_key()
             break
         elif (usr_confirm == 'n'):
@@ -162,11 +165,10 @@ while(True):
         print(key, value)
     try:
         user_sel = input('\nWhat would you like to do? ')
+        clear()
         if user_sel == '0':
-            print('Exiting...')
             break
         else:
-            clear()
             funcDict[user_sel]()
 
     except KeyError:
