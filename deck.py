@@ -1,4 +1,4 @@
-# Methods and variables for making and using a deck of Life Twists & Turns cards.
+# Attributes & methods for making and using a deck of Life Twists & Turns cards.
 import os
 from console.utils import wait_key
 import pickle
@@ -9,10 +9,11 @@ clear = lambda: os.system('clear')
 deckName = 'myDeck'
 categories= ['Earn It!', 'Learn It!', 'Live It!', 'Love It!']
 
+
 # Method for formating and displaying a card. Expects a single dictionary argument
-def cardView (drawnCard):   # drawnCard is a dict containing keys and tuple items
+def cardView(card):   # card is a dict containing keys and tuple items
     print('')
-    for key,txt_tuple in drawnCard.items():
+    for key,txt_tuple in card.items():
         print(key)
         print('\t',txt_tuple[0],'\n\t',txt_tuple[1],'\n')
 
@@ -37,7 +38,7 @@ def dumpDeck(allCards):
 def scrollDeck (allCards, validInd):    # allCards is a list containing card dict objects
                                         # validInd is a list of intergers (defines subset)
     clear()
-    i = len(validInd) - 1   # Index for validInd list
+    i = len(validInd) - 1   # Index for current card being viewed, to be returned upon selection
     print('Here is the most recent card:\n')
     while(True):
         cardView(allCards[validInd[i]])
