@@ -1,7 +1,6 @@
 #!/usr/bin/env python3
 # Tool script for drawing cards from a serialized deck object
 import os
-import pickle
 import random
 from console.utils import wait_key
 import deck
@@ -12,11 +11,7 @@ clear = lambda: os.system('clear')
 
 
 # Import cardlist
-try:
-    with open(deck.deckName, 'rb') as deckFile:
-        allCards = pickle.load(deckFile)
-except FileNotFoundError:
-    raise SystemExit('\nNo local serialized deck file found.\nExiting Card Draw...')
+allCards = deck.getDeck()
 
 
 # Initialize & main code
@@ -25,7 +20,7 @@ print('Welcome to Card Draw!')
 drawnCards = []     # list of indeces for all drawn cards
 
 while(True):
-    print('\nPress D to draw a card.\t\tPress R to review previously drawn cards\t\tPress X to exit.\n')
+    print('\nReturn D to draw a card\t\tReturn R to review previously drawn cards\t\tReturn X to exit\n')
     cmd = input('\nPlease select an option: ').lower()
     clear()
 
@@ -37,15 +32,15 @@ while(True):
         deck.cardView(allCards[i])
         drawnCards.append(i) # note card's allCards index so it can't be drawn again until reshuffle
         if (len(drawnCards) == len(allCards)): # if all cards have been drawn, reshuffle
-            print('All cards have been drawn, press any key to reshuffle')
+            print('All cards have been drawn, press any key to reshuffle\n')
             wait_key()
             drawnCards = []
             clear()
-            print('All cards have been drawn, so the deck has been reshuffled')
+            print('All cards have been drawn, so the deck has been reshuffled\n')
 
     elif cmd == 'r': 
         if (len(drawnCards) <= 0):
-            print('\nNo cards have been drawn')
+            print('\nNo cards have been drawn\n')
         else:
             #j = drawnCards[len(drawnCards)-1]   # allCards index of the last card drawn
             #deck.cardView(allCards[j])          # create scrollDeck function and replace this line
@@ -54,4 +49,3 @@ while(True):
     elif cmd == 'x':      # exit Card Draw
         print('\nExiting Card Draw...')
         break
-
