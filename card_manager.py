@@ -86,8 +86,6 @@ def viewCard():
 
 # Function to edit cards
 def editCard():
-    print('Edit function is currently not working')
-#    return
     allCards = deck.getDeck()
     numAll = list(range(0,len(allCards)))
     card2EditInd = deck.scrollDeck(allCards,numAll)
