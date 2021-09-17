@@ -25,7 +25,7 @@ def getDeck():
             allCards = pickle.load(deckFile)
         return allCards
     except FileNotFoundError:
-        print('No local serialized deck file found. Please initialize a new deck...')
+        raise RuntimeError('No local serialized deck file found. Please initialize a new deck...')
 
 
 # Method for dumping deck into a serialized deck file. Can also be used to initialize a deck
